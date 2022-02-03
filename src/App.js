@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
+import AddBlogForm from './components/AddBlogForm'
+import Notification from './components/Notification'
 import loginService from './services/login'
 
 const App = () => {
@@ -9,6 +11,8 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
+  const [newBlog, setNewBlog] = useState({"title":'',"author":'',"url":''})
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -25,10 +29,25 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-   
+  const handleAddBlog = async (event) => {
     event.preventDefault()
-    console.log("hey")
+    try {
+      await blogService.create(newBlog)
+      setErrorMessage(`${user.name} added ${newBlog.title} by ${newBlog.author}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000) 
+      setNewBlog({"title":'',"author":'',"url":''})
+    } catch (exception){
+      setErrorMessage('Wrong input')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000) 
+    }
+  } 
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
     try {
       const user = await loginService.login({
         username, password
@@ -41,17 +60,19 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception){
-      /* setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong Username or Password')
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000) */
+      }, 5000) 
     }
   } 
 
   const handleLogout = () => {
     setUser(null)
+    setErrorMessage(null)
     setUsername('')
     setPassword('')
+    setNewBlog({"title":'',"author":'',"url":''})
     window.localStorage.removeItem('loggedBlogUser')
   }
 
@@ -59,6 +80,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+      <Notification errorMessage={errorMessage} />
       <LoginForm
         handlelogin={(x)=>handleLogin(x)}
         username={username}
@@ -72,9 +94,15 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
       <p>{user.name} logged in</p>
       <button onClick={()=>handleLogout()}>Logout</button>
+      <Notification errorMessage={errorMessage} />
+      <AddBlogForm 
+        handleAddBlog = {(x) => handleAddBlog(x)}
+        newBlog = {newBlog}
+        setNewBlog = {(x) => setNewBlog(x)}
+      />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
