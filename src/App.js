@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import AddBlogForm from './components/AddBlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import loginService from './services/login'
 
 const App = () => {
@@ -98,11 +99,13 @@ const App = () => {
       <p>{user.name} logged in</p>
       <button onClick={()=>handleLogout()}>Logout</button>
       <Notification errorMessage={errorMessage} />
-      <AddBlogForm 
-        handleAddBlog = {(x) => handleAddBlog(x)}
-        newBlog = {newBlog}
-        setNewBlog = {(x) => setNewBlog(x)}
-      />
+      <Togglable buttonLabel="Create New Blog">
+        <AddBlogForm 
+          handleAddBlog = {(x) => handleAddBlog(x)}
+          newBlog = {newBlog}
+          setNewBlog = {(x) => setNewBlog(x)}
+        />
+      </Togglable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
