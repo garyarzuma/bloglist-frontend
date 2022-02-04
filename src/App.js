@@ -12,7 +12,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
-  const [newBlog, setNewBlog] = useState({"title":'',"author":'',"url":''})
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
@@ -30,15 +29,13 @@ const App = () => {
     }
   }, [])
 
-  const handleAddBlog = async (event) => {
-    event.preventDefault()
+  const handleAddBlog = async (blog) => {
     try {
-      await blogService.create(newBlog)
-      setErrorMessage(`${user.name} added ${newBlog.title} by ${newBlog.author}`)
+      await blogService.create(blog)
+      setErrorMessage(`${user.name} added ${blog.title} by ${blog.author}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000) 
-      setNewBlog({"title":'',"author":'',"url":''})
     } catch (exception){
       setErrorMessage('Wrong input')
       setTimeout(() => {
@@ -73,7 +70,7 @@ const App = () => {
     setErrorMessage(null)
     setUsername('')
     setPassword('')
-    setNewBlog({"title":'',"author":'',"url":''})
+    //setNewBlog({"title":'',"author":'',"url":''}) need a ref here
     window.localStorage.removeItem('loggedBlogUser')
   }
 
@@ -101,9 +98,7 @@ const App = () => {
       <Notification errorMessage={errorMessage} />
       <Togglable buttonLabel="Create New Blog">
         <AddBlogForm 
-          handleAddBlog = {(x) => handleAddBlog(x)}
-          newBlog = {newBlog}
-          setNewBlog = {(x) => setNewBlog(x)}
+          createBlog = {handleAddBlog}
         />
       </Togglable>
       {blogs.map(blog =>
