@@ -15,9 +15,11 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    const fetchFunction = async () => {
+    const blogs = await blogService.getAll()
+    setBlogs( blogs )  
+    }
+    fetchFunction()
   }, [])
 
   useEffect(() => {
@@ -102,7 +104,7 @@ const App = () => {
         />
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} setBlogs={(blogs)=>setBlogs(blogs)} />
       )}
     </div>
   )

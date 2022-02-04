@@ -7,9 +7,9 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
+const getAll = async () => {
+  const request = await axios.get(baseUrl)
+  return request.data
 }
 
 const create = async (blog) => {
@@ -19,4 +19,11 @@ const create = async (blog) => {
   await axios.post(baseUrl,blog, config)
 }
 
-export default { create, getAll, setToken }
+const pressLike = async (blog) => {
+  const config = {
+    headers: {Authorization: token}
+  }
+  await axios.put(baseUrl+`/${blog.id}`, blog, config)
+}
+
+export default { create, getAll, setToken, pressLike }
