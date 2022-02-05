@@ -26,4 +26,11 @@ const pressLike = async (blog) => {
   await axios.put(baseUrl+`/${blog.id}`, blog, config)
 }
 
-export default { create, getAll, setToken, pressLike }
+const pressDelete = async (id) => {
+  const config = {
+    headers: {Authorization: token}
+  }
+  await axios.delete(baseUrl+`/${id}`, config)
+}
+
+export default { create, getAll, setToken, pressLike, pressDelete }

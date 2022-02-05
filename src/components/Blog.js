@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({blog, setBlogs}) => {
+const Blog = ({blog, setBlogs, user}) => {
   const [view, setView] = useState(false)
 
   const blogStyle = {
@@ -24,6 +24,17 @@ const Blog = ({blog, setBlogs}) => {
     }
   }
 
+  const handleDelete = async () => {
+    try{
+      await blogService.pressDelete(blog.id)
+      const blogs = await blogService.getAll()
+      const blogSorted = blogs.sort((first,second)=>second.likes-first.likes)
+      setBlogs(blogSorted)
+    } catch (exception){
+      console.log(exception)
+    }
+  }
+
   return(
     <div style={blogStyle}>
       {blog.title} by {blog.author}   
@@ -33,6 +44,7 @@ const Blog = ({blog, setBlogs}) => {
           <div>URL: {blog.url}</div>
           <div>Likes: {blog.likes}<button onClick={handleLike}>Like</button></div>
           <div>Posted by {blog.user.username}</div>
+          {user.username === blog.user.username && <button onClick={handleDelete}>Delete</button>}
         </div>  
       }
     </div>  
