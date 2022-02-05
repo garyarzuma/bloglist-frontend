@@ -17,7 +17,8 @@ const Blog = ({blog, setBlogs}) => {
     try {
       await blogService.pressLike(newBlog)
       const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      const blogSorted = blogs.sort((first,second)=>second.likes-first.likes)
+      setBlogs(blogSorted)
     } catch (exception){
         console.log(exception)
     }
