@@ -26,10 +26,12 @@ const Blog = ({blog, setBlogs, user}) => {
 
   const handleDelete = async () => {
     try{
-      await blogService.pressDelete(blog.id)
-      const blogs = await blogService.getAll()
-      const blogSorted = blogs.sort((first,second)=>second.likes-first.likes)
-      setBlogs(blogSorted)
+      if(window.confirm(`Are you sure you want to delete ${blog.title} by ${blog.author}?`)) {
+        await blogService.pressDelete(blog.id)
+        const blogs = await blogService.getAll()
+        const blogSorted = blogs.sort((first,second)=>second.likes-first.likes)
+        setBlogs(blogSorted)
+      }
     } catch (exception){
       console.log(exception)
     }
