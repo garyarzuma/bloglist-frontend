@@ -64,8 +64,8 @@ describe('<Blog.js>', () => {
     fireEvent.click(button)
 
     const like = component.getByText('Like')
-    await fireEvent.click(like)
-    await fireEvent.click(like)
+    fireEvent.click(like)
+    fireEvent.click(like)
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
