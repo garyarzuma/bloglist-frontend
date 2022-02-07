@@ -77,6 +77,18 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogUser')
   }
 
+  const handleLike = async (blog) => {
+    const newBlog = { ...blog, likes:(blog.likes+1) }
+    try {
+      await blogService.pressLike(newBlog)
+      const blogs = await blogService.getAll()
+      const blogSorted = blogs.sort((first,second) => second.likes-first.likes)
+      setBlogs(blogSorted)
+    } catch (exception){
+      console.log(exception)
+    }
+  }
+
   if (user === null) {
     return (
       <div>
@@ -105,7 +117,7 @@ const App = () => {
         />
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} setBlogs={(blogs) => setBlogs(blogs)} />
+        <Blog key={blog.id} blog={blog} user={user} handleLike={handleLike} setBlogs={(blogs) => setBlogs(blogs)} />
       )}
     </div>
   )
