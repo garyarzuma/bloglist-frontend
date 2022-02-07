@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
@@ -16,9 +16,9 @@ const App = () => {
 
   useEffect(() => {
     const fetchFunction = async () => {
-    const blogs1 = await blogService.getAll()
-    const sortedBlogs = blogs1.sort((first,second) => second.likes-first.likes)
-    setBlogs( sortedBlogs)  
+      const blogs1 = await blogService.getAll()
+      const sortedBlogs = blogs1.sort((first,second) => second.likes-first.likes)
+      setBlogs( sortedBlogs)
     }
     fetchFunction()
   }, [])
@@ -38,14 +38,14 @@ const App = () => {
       setErrorMessage(`${user.name} added ${blog.title} by ${blog.author}`)
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000) 
+      }, 5000)
     } catch (exception){
       setErrorMessage('Wrong input')
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000) 
+      }, 5000)
     }
-  } 
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -55,7 +55,7 @@ const App = () => {
       })
       window.localStorage.setItem(
         'loggedBlogUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -64,9 +64,9 @@ const App = () => {
       setErrorMessage('Wrong Username or Password')
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000) 
+      }, 5000)
     }
-  } 
+  }
 
   const handleLogout = () => {
     setUser(null)
@@ -81,14 +81,14 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
-      <Notification errorMessage={errorMessage} />
-      <LoginForm
-        handlelogin={(x)=>handleLogin(x)}
-        username={username}
-        password={password}
-        setPassword={(x)=>setPassword(x)}
-        setUsername={(x)=>setUsername(x)}
-      />
+        <Notification errorMessage={errorMessage} />
+        <LoginForm
+          handlelogin={(x) => handleLogin(x)}
+          username={username}
+          password={password}
+          setPassword={(x) => setPassword(x)}
+          setUsername={(x) => setUsername(x)}
+        />
       </div>
     )
   }
@@ -97,15 +97,15 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       <p>{user.name} logged in</p>
-      <button onClick={()=>handleLogout()}>Logout</button>
+      <button onClick={() => handleLogout()}>Logout</button>
       <Notification errorMessage={errorMessage} />
       <Togglable buttonLabel="Create New Blog">
-        <AddBlogForm 
+        <AddBlogForm
           createBlog = {handleAddBlog}
         />
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} setBlogs={(blogs)=>setBlogs(blogs)} />
+        <Blog key={blog.id} blog={blog} user={user} setBlogs={(blogs) => setBlogs(blogs)} />
       )}
     </div>
   )
