@@ -118,9 +118,11 @@ const App = () => {
           createBlog = {handleAddBlog}
         />
       </Togglable>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} handleLike={handleLike} setBlogs={(blogs) => setBlogs(blogs)} />
-      )}
+      <div id='blogArray'>
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} user={user} handleLike={handleLike} setBlogs={(blogs) => setBlogs(blogs)} />
+        )}
+      </div>
     </div>
   )
 }

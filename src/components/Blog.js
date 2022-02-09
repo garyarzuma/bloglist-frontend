@@ -26,11 +26,11 @@ const Blog = ({ blog, setBlogs, user, handleLike }) => {
   }
 
   return(
-    <div  style={blogStyle}>
+    <div id='blog' style={blogStyle}>
       {blog.title} by {blog.author}
-      <button onClick={() => setView(!view)}>View</button>
+      <button id='viewButton' onClick={() => setView(!view)}>View</button>
       {view &&
-        <div id='blog'>
+        <div >
           <div>URL: {blog.url}</div>
           <div>Likes: {blog.likes}<button id='likeButton' onClick={() => handleLike(blog)}>Like</button></div>
           <div>Posted by {blog.user.username}</div>

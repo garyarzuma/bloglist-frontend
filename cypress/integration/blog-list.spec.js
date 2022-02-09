@@ -69,5 +69,43 @@ describe('Blog app', function() {
       cy.get('#deleteButton').click()
       cy.get('html').should('not.contain', 'Likes')
     })
+
+    it('Blogs are in order of descending Likes', function() {
+      cy.contains('Create New Blog').click()
+      cy.get('#title').type('A Blog to be Liked')
+      cy.get('#author').type('Gary Arzumanyan')
+      cy.get('#url').type('www.twitter.com/ablogtoBeliked')
+      cy.contains('create').click()
+
+      cy.get('#title').type('A Blog to be kinda Liked')
+      cy.get('#author').type('Gary Arzumanyan')
+      cy.get('#url').type('www.twitter.com/ablogtoBelikednotThatmuch')
+      cy.contains('create').click()
+
+      cy.get('#title').type('A Blog to be not liked')
+      cy.get('#author').type('Gary Arzumanyan')
+      cy.get('#url').type('www.twitter.com/ablogtoBelikednotatall')
+      cy.contains('create').click().wait(500)
+
+      cy.get('#blogArray #blog').eq(0).contains('View').click().wait(500)
+      cy.get('#blogArray #blog').eq(0).contains('Like').click().wait(500)
+
+      cy.get('#blogArray #blog').eq(1).contains('View').click().wait(500)
+      cy.get('#blogArray #blog').eq(1).contains('Like').click().wait(500).click().wait(500)
+
+      cy.get('#blogArray #blog').eq(2).contains('View').click().wait(500)
+      cy.get('#blogArray #blog').eq(2).contains('Like').click().wait(500).click().wait(500).click().wait(500)
+      cy.visit('http://localhost:3000')
+
+      cy.get('#blogArray #blog').eq(0).contains('View').click().wait(500)
+      cy.get('#blogArray #blog').eq(0).contains('Likes: 3')
+
+      cy.get('#blogArray #blog').eq(1).contains('View').click().wait(500)
+      cy.get('#blogArray #blog').eq(1).contains('Likes: 2')
+
+      cy.get('#blogArray #blog').eq(2).contains('View').click().wait(500)
+      cy.get('#blogArray #blog').eq(2).contains('Likes: 1')
+    })
+
   })
 })
