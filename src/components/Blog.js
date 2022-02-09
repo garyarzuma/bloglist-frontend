@@ -26,15 +26,15 @@ const Blog = ({ blog, setBlogs, user, handleLike }) => {
   }
 
   return(
-    <div style={blogStyle}>
+    <div  style={blogStyle}>
       {blog.title} by {blog.author}
       <button onClick={() => setView(!view)}>View</button>
       {view &&
-        <div>
+        <div id='blog'>
           <div>URL: {blog.url}</div>
           <div>Likes: {blog.likes}<button id='likeButton' onClick={() => handleLike(blog)}>Like</button></div>
           <div>Posted by {blog.user.username}</div>
-          {user.username === blog.user.username && <button onClick={handleDelete}>Delete</button>}
+          {user.username === blog.user.username && <button id='deleteButton' onClick={handleDelete}>Delete</button>}
         </div>
       }
     </div>

@@ -48,7 +48,7 @@ describe('Blog app', function() {
       cy.contains('View').click()
     })
 
-    it.only('A blog can be liked', function() {
+    it('A blog can be liked', function() {
       cy.contains('Create New Blog').click()
       cy.get('#title').type('A Blog to be Liked')
       cy.get('#author').type('Gary Arzumanyan')
@@ -57,6 +57,17 @@ describe('Blog app', function() {
       cy.contains('View').click()
       cy.get('#likeButton').click()
       cy.contains('Likes: 1') //it defualts to likes being 0 since we didnt add any likes parameter
+    })
+
+    it('A blog can be deleted', function() {
+      cy.contains('Create New Blog').click()
+      cy.get('#title').type('A Blog to be Liked')
+      cy.get('#author').type('Gary Arzumanyan')
+      cy.get('#url').type('www.twitter.com/ablogtoBeliked')
+      cy.contains('create').click()
+      cy.contains('View').click()
+      cy.get('#deleteButton').click()
+      cy.get('html').should('not.contain', 'Likes')
     })
   })
 })

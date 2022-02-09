@@ -35,7 +35,6 @@ const App = () => {
   const handleAddBlog = async (blog) => {
     try {
       const newBlog = await blogService.create(blog)
-      console.log(newBlog)
       setBlogs(blogs.concat(newBlog))
       setErrorMessage(`${user.name} added ${blog.title} by ${blog.author}`)
       setTimeout(() => {
