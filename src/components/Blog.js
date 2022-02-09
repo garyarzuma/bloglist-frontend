@@ -32,7 +32,7 @@ const Blog = ({ blog, setBlogs, user, handleLike }) => {
       {view &&
         <div>
           <div>URL: {blog.url}</div>
-          <div>Likes: {blog.likes}<button onClick={() => handleLike(blog)}>Like</button></div>
+          <div>Likes: {blog.likes}<button id='likeButton' onClick={() => handleLike(blog)}>Like</button></div>
           <div>Posted by {blog.user.username}</div>
           {user.username === blog.user.username && <button onClick={handleDelete}>Delete</button>}
         </div>
