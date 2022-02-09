@@ -16,14 +16,16 @@ const create = async (blog) => {
   const config = {
     headers: { Authorization: token }
   }
-  await axios.post(baseUrl,blog, config)
+  const request = await axios.post(baseUrl,blog, config)
+  return request.data
 }
 
 const pressLike = async (blog) => {
   const config = {
     headers: { Authorization: token }
   }
-  await axios.put(baseUrl+`/${blog.id}`, blog, config)
+  const request = await axios.put(baseUrl+`/${blog.id}`, blog, config)
+  return request.data
 }
 
 const pressDelete = async (id) => {

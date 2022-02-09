@@ -34,7 +34,8 @@ const App = () => {
 
   const handleAddBlog = async (blog) => {
     try {
-      await blogService.create(blog)
+      const newBlog = await blogService.create(blog)
+      setBlogs(blogs.concat(newBlog))
       setErrorMessage(`${user.name} added ${blog.title} by ${blog.author}`)
       setTimeout(() => {
         setErrorMessage(null)
@@ -80,10 +81,11 @@ const App = () => {
   const handleLike = async (blog) => {
     const newBlog = { ...blog, likes:(blog.likes+1) }
     try {
-      await blogService.pressLike(newBlog)
-      const blogs = await blogService.getAll()
-      const blogSorted = blogs.sort((first,second) => second.likes-first.likes)
-      setBlogs(blogSorted)
+      const response = await blogService.pressLike(newBlog)
+      let temp = [...blogs]
+      const indexToChange = temp.map(x => x.id).indexOf(response.id)
+      temp[indexToChange] = response
+      setBlogs(temp)
     } catch (exception){
       console.log(exception)
     }

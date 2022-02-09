@@ -30,4 +30,22 @@ describe('Blog app', function() {
       cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username').type('garyroolz')
+      cy.get('#password').type('starpower')
+      cy.get('#login-button').click()
+    })
+
+    it.only('A blog can be created', function() {
+      cy.contains('Create New Blog').click()
+      cy.get('#title').type('A Blog by Gary')
+      cy.get('#author').type('Gary Arzumanyan')
+      cy.get('#url').type('www.twitter.com/ablogbygary')
+      cy.contains('create').click()
+      cy.contains('A Blog by Gary by Gary Arzumanyan')
+      //cy.contains('View').click()
+    })
+  })
 })
